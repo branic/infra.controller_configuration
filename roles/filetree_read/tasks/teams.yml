@@ -18,9 +18,9 @@
   register: __contents_filetree_controller_teams
   failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_controller_teams"
 
-- name: "Set Roles Data Structure"
+- name: "Set Teams Data Structure"
   ansible.builtin.set_fact:
-    controller_roles: >-
+    controller_teams: >-
       {{
         __contents_filetree_controller_teams.results |
         rejectattr('ansible_facts.controller_teams', 'undefined') |
