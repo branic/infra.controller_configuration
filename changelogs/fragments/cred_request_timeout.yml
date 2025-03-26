@@ -1,3 +1,0 @@
----
-bugfixes:
-  - Add missing request_timeout option to credential role

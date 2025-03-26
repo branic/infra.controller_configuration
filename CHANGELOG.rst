@@ -1,9 +1,44 @@
-============================================
-infra.controller_configuration Release Notes
-============================================
+=============================================
+infra.controller\_configuration Release Notes
+=============================================
 
 .. contents:: Topics
 
+v3.0.0
+======
+
+Major Changes
+-------------
+
+- filetree_create is able to use external dictionary to modify object during the export
+
+Minor Changes
+-------------
+
+- filetree_create able export WF nodes and schedules without encrypted value in survey
+- filetree_create able to export single inventory
+- filetree_create is able to export approval node of workflow
+- filetree_create is able to export inventory without sources/hosts/groups.
+- filetree_create is able to export variables without key sorting
+
+Bugfixes
+--------
+
+- Add missing request_timeout option to credential role
+- Backport enhacenments from infra.aap_configuration_extended
+- filetree_create export missing inventory ask settings of workflows
+- filetree_create export missing inventory for workflow node
+- filetree_create export missing limits settings of workflows
+- filetree_create exported properly smart inventories host filter (double quotes issue)
+- filetree_create extra_vars regex issue
+- filetree_create job_template and workflow_job_template issues with complex fields
+- filetree_create job_template and workflow_job_template survey default values issue when they are multiline
+- filetree_create job_template double quote issue
+- filetree_create no longer export schedules extra data when extra_vars of job template is empty (null issue)
+- filetree_create properly escape every variable with unsafe
+- filetree_create remove state from workflow job templates output to avoid problems when importing those files
+- filetree_create roles export issue
+- filetree_create roles export issues introduced by PR
 
 v2.11.0
 =======
@@ -284,7 +319,7 @@ Minor Changes
 Bugfixes
 --------
 
-- Enable the ability to define simple_workflow_nodes on workflow_job_templates without the need to set the `state` on a workflow_job_template (https://github.com/redhat-cop/controller_configuration/issues/297).
+- Enable the ability to define simple_workflow_nodes on workflow_job_templates without the need to set the `state` on a workflow_job_template (https://github.com/redhat-cop/infra.controller_configuration/issues/297).
 
 v2.2.4
 ======
