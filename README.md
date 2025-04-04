@@ -24,13 +24,14 @@ The awx.awx or ansible.controller collections MUST be installed in order for thi
 
 ```yaml
 ---
-- name: Playbook to configure ansible controller post installation
-  hosts: localhost
-  connection: local
-  vars:
-    controller_validate_certs: true
-  collections:
-    - awx.awx
+---
+collections:
+  # - name: awx.awx
+  # or
+  - name: ansible.controller
+    version: '>=4.5.0,<4.6.0'
+  - name: infra.controller_configuration
+...
 ```
 
 ## Links to Ansible Automation Platform Collections
@@ -73,7 +74,7 @@ collections:
 
 ## Conversion from tower_configuration
 
-If you were using a version of redhat_cop.tower_configuration, please refer to our Conversion Guide here: [Conversion Guide](docs/CONVERSION_GUIDE.md)
+If you were using a version of redhat_cop.tower_configuration, please refer to our Conversion Guide here: [Conversion Guide](https://github.com/redhat-cop/infra.controller_configuration/blob/devel/docs/CONVERSION_GUIDE.md)
 
 ## Using this collection
 
@@ -106,7 +107,7 @@ You can also specify authentication by a combination of either:
 - `controller_hostname`, `controller_oauthtoken`
 
 The OAuth2 token is the preferred method. You can obtain the token through the preferred `controller_token` module, or through the
-AWX CLI [login](https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html)
+AWX CLI [login](https://docs.ansible.com/automation-controller/4.4/html/controllerapi/authentication.html)
 command.
 
 These can be specified via (from highest to lowest precedence):
@@ -144,7 +145,7 @@ Controller token module would be invoked with this code:
 
 Every Ansible Controller instance has it's own particularities and needs. Every administrator team has it's own practices and customs. This collection allows adaptation to every need, from small to large scale, having the objects distributed across multiple environments and leveraging Automation Webhook that can be used to link a Git repository and Ansible automation natively.
 
-A complete example of how to use all of the roles present in the collection is available at the following [README.md](roles/filetree_create/automatetheautomation.md), where all the phases to allow CI/CD for the Controller Configuration are provided.
+A complete example of how to use all of the roles present in the collection is available at the following [README.md](https://github.com/redhat-cop/infra.controller_configuration/blob/devel/roles/filetree_create/automatetheautomation.md), where all the phases to allow CI/CD for the Controller Configuration are provided.
 
 #### Scale at your needs
 
@@ -154,7 +155,7 @@ The input data can be organized in a very flexible way, letting the user use any
 
 The awx command line can export json that is compatible with this collection.
 In addition there is an awx.awx/ansible.controller export module that use the awx command line to export.
-More details can be found [here](EXPORT_README.md)
+More details can be found [here](https://github.com/redhat-cop/infra.controller_configuration/blob/devel/EXPORT_README.md)
 
 ### Template Example
 
@@ -166,7 +167,7 @@ A Template to use in order to start using the collections can be found [here](ht
 
 ## Release and Upgrade Notes
 
-For details on changes between versions, please see [the changelog for this collection](CHANGELOG.rst).
+For details on changes between versions, please see [the changelog for this collection](https://github.com/redhat-cop/infra.controller_configuration/blob/devel/CHANGELOG.rst).
 
 ## Releasing, Versioning and Deprecation
 
@@ -197,4 +198,4 @@ Please read and familiarize yourself with this document.
 
 GNU General Public License v3.0 or later.
 
-See [LICENSE](LICENSE) to see the full text.
+See [LICENSE](https://github.com/redhat-cop/infra.controller_configuration/blob/devel/LICENSE) to see the full text.
