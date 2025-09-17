@@ -5,6 +5,9 @@ infra.controller\_configuration Release Notes
 .. contents:: Topics
 
 v3.1.4
+=======
+
+v3.1.3
 ======
 
 Bugfixes
