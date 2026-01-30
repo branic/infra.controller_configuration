@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - "filetree_create - Don't export the unified_job_template related info if it's not defined"
+...
