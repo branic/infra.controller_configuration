@@ -9,7 +9,11 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "community"}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 
 DOCUMENTATION = """
@@ -210,10 +214,14 @@ from copy import deepcopy
 ControllerAWXKitModule = None
 
 try:
-    from ansible_collections.awx.awx.plugins.module_utils.awxkit import ControllerAWXKitModule
+    from ansible_collections.awx.awx.plugins.module_utils.awxkit import (
+        ControllerAWXKitModule,
+    )
 except ImportError:
     try:
-        from ansible_collections.ansible.controller.plugins.module_utils.awxkit import ControllerAWXKitModule
+        from ansible_collections.ansible.controller.plugins.module_utils.awxkit import (
+            ControllerAWXKitModule,
+        )
     except ImportError:
         pass
 
@@ -250,6 +258,17 @@ def main():
     if ControllerAWXKitModule is None:
         from ansible.module_utils.basic import AnsibleModule
 
+        argument_spec.update(
+            dict(
+                controller_host=dict(type="str", aliases=["tower_host"]),
+                controller_username=dict(type="str", aliases=["tower_username"]),
+                controller_password=dict(type="str", no_log=True, aliases=["tower_password"]),
+                controller_oauthtoken=dict(type="raw", no_log=True, aliases=["tower_oauthtoken"]),
+                validate_certs=dict(type="bool", aliases=["tower_verify_ssl"]),
+                request_timeout=dict(type="float"),
+                controller_config_file=dict(type="path", aliases=["tower_config_file"]),
+            )
+        )
         module = AnsibleModule(argument_spec=argument_spec)
         module.fail_json(msg="Failed to import ControllerAWXKitModule. Install awx.awx or ansible.controller collection.")
 
