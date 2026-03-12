@@ -24,7 +24,7 @@ Currently:
 |`controller_oauthtoken`|""|no|Controller Admin User's token on the Ansible Controller Server. This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook. Either username / password or oauthtoken need to be specified.||
 |`controller_request_timeout`|`10`|no|Specify the timeout in seconds Ansible should use in requests to the controller host.||
 |`controller_configuration_collect_logs`|`false`|no|Specify whether to collect async results and continue for all failed async tasks instead of failing on the first error. Collected results are available in the `controller_configuration_role_errors` variable.||
-|`controller_templates`|`see below`|yes|Data structure describing your job template or job templates Described below. Alias: job_templates ||
+|`controller_templates`|`see below`|yes|Data structure describing your job template or job templates Described below. Alias: job_templates||
 
 ### Enforcing defaults
 
@@ -96,7 +96,7 @@ This also speeds up the overall role.
 |`force_handlers`|""|no|bool|Enable forcing playbook handlers to run even if a task fails.|
 |`skip_tags`|""|no|str|Comma separated list of the tags to skip for the job template.|
 |`start_at_task`|""|no|str|Start the playbook at the task matching this name.|
-|`diff_mode`|""|no|bool|Enable diff mode for the job template |
+|`diff_mode`|""|no|bool|Enable diff mode for the job template|
 |`use_fact_cache`|""|no|bool|Enable use of fact caching for the job template.|
 |`host_config_key`|""|no|str|Allow provisioning callbacks using this host config key.|
 |`ask_scm_branch_on_launch`|""|no|bool|Prompt user for scm branch on launch.|

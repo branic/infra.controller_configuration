@@ -75,6 +75,7 @@
       changed_when: (__workflows_job_async.changed if ansible_check_mode else false)
       vars:
         __operation: "{{ operation_translate[__workflow_loop_item.state | default(controller_state) | default('present')] }}"
+      no_log: "{{ workflow_job_templates_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:
