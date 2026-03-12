@@ -8,8 +8,7 @@ bugfixes: # do not care to call CI work a major/minor change
   - Replaced complex CI/CD workflows that delegated to ansible_collections_tooling with simplified, self-contained GitHub Actions workflows.
   - Replaced release_auto.yml with a fully inlined workflow covering version calculation, changelog generation, GitHub release, Galaxy/Automation Hub publishing, EE build, and Matrix notifications.
   - Added Dependabot configuration for automated updates of GitHub Actions, pip dependencies, and pre-commit hooks.
-
-bugfixes:
+  # actual code changes
   - Fixed controller_export_diff module to handle missing ControllerAWXKitModule gracefully, preventing NameError during sanity tests.
   - Fixed YAML quoting in filetree_create role task names to resolve ansible-lint load-failure errors.
   - Fixed markdown table alignment (MD060) across all role README files and the top-level README.
