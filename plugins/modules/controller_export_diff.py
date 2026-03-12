@@ -207,13 +207,15 @@ import logging
 from ansible.module_utils.six.moves import StringIO
 from copy import deepcopy
 
+ControllerAWXKitModule = None
+
 try:
     from ansible_collections.awx.awx.plugins.module_utils.awxkit import ControllerAWXKitModule
 except ImportError:
     try:
         from ansible_collections.ansible.controller.plugins.module_utils.awxkit import ControllerAWXKitModule
     except ImportError:
-        AAP_IMPORT_ERROR = True
+        pass
 
 try:
     from awxkit.api.pages.api import EXPORTABLE_RESOURCES
@@ -244,6 +246,12 @@ def main():
         set_absent=dict(type="bool", default=True),
         with_present=dict(type="bool", default=True),
     )
+
+    if ControllerAWXKitModule is None:
+        from ansible.module_utils.basic import AnsibleModule
+
+        module = AnsibleModule(argument_spec=argument_spec)
+        module.fail_json(msg="Failed to import ControllerAWXKitModule. Install awx.awx or ansible.controller collection.")
 
     module = ControllerAWXKitModule(argument_spec=argument_spec)
 
