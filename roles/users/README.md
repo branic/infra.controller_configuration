@@ -24,7 +24,7 @@ Currently:
 |`controller_oauthtoken`|""|no|Controller Admin User's token on the Ansible Controller Server. This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook. Either username / password or oauthtoken need to be specified.||
 |`controller_request_timeout`|`10`|no|Specify the timeout in seconds Ansible should use in requests to the controller host.||
 |`controller_configuration_collect_logs`|`false`|no|Specify whether to collect async results and continue for all failed async tasks instead of failing on the first error. Collected results are available in the `controller_configuration_role_errors` variable.||
-|`controller_user_accounts`|`see below`|yes|Data structure describing your user entries described below.  Alias: users ||
+|`controller_user_accounts`|`see below`|yes|Data structure describing your user entries described below.  Alias: users||
 |`controller_user_default_password`|""|no|Global variable to set the password for all users.||
 
 ### Enforcing defaults
@@ -88,7 +88,7 @@ This also speeds up the overall role.
 |`is_system_auditor`|false|no|bool|Whether the user is an auditor|
 |`organization`|""|no|str|The name of the organization the user belongs to.<br />Added in awx.awx >= 20.0.0 DOES NOT exist in ansible.controller yet.|
 |`state`|`present`|no|str|Desired state of the resource.|
-|`update_secrets`|true|no|bool| True will always change password if user specifies password, even if API gives $encrypted$ for password. False will only set the password if other values change too.|
+|`update_secrets`|true|no|bool|True will always change password if user specifies password, even if API gives $encrypted$ for password. False will only set the password if other values change too.|
 
 ### Standard User Data Structure
 
