@@ -24,7 +24,7 @@ Currently:
 |`controller_oauthtoken`|""|no|Controller Admin User's token on the Ansible Controller Server. This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook. Either username / password or oauthtoken need to be specified.||
 |`controller_request_timeout`|`10`|no|Specify the timeout in seconds Ansible should use in requests to the controller host.||
 |`controller_configuration_collect_logs`|`false`|no|Specify whether to collect async results and continue for all failed async tasks instead of failing on the first error. Collected results are available in the `controller_configuration_role_errors` variable.||
-|`controller_credentials`|`see below`|yes|Data structure describing your credentials Described below. Alias: credentials ||
+|`controller_credentials`|`see below`|yes|Data structure describing your credentials Described below. Alias: credentials||
 
 ### Enforcing defaults
 
@@ -82,12 +82,12 @@ This also speeds up the overall role.
 |`copy_from`|""|no|Name or id to copy the credential from. This will copy an existing credential and change any parameters supplied.|
 |`description`|`False`|no|Description of  of Credential.|
 |`organization`|""|no|Organization this Credential belongs to. If provided on creation, do not give either user or team.|
-|`credential_type`|""|no|Name of credential type. See below for list of options. More information in Ansible controller documentation. |
+|`credential_type`|""|no|Name of credential type. See below for list of options. More information in Ansible controller documentation.|
 |`inputs`|""|no|Credential inputs where the keys are var names used in templating. Refer to the Ansible controller documentation for example syntax. Individual examples can be found at /api/v2/credential_types/ on an controller.|
-|`user`|""|no|User that should own this credential. If provided, do not give either team or organization. |
-|`team`|""|no|Team that should own this credential. If provided, do not give either user or organization. |
+|`user`|""|no|User that should own this credential. If provided, do not give either team or organization.|
+|`team`|""|no|Team that should own this credential. If provided, do not give either user or organization.|
 |`state`|`present`|no|Desired state of the resource.|
-|`update_secrets`|true|no| True will always change password if user specifies password, even if API gives $encrypted$ for password. False will only set the password if other values change too.|
+|`update_secrets`|true|no|True will always change password if user specifies password, even if API gives $encrypted$ for password. False will only set the password if other values change too.|
 
 ### Credential types
 

@@ -7,7 +7,8 @@
     # The user module is also an ansible.builtin module, but due to supporting both the awx.awx and automation.Controller collections
     # the FQCN cannot be used here.
     - name: Managing Controller Users # noqa fqcn[action-core]
-      user:
+      ansible.builtin.user:
+        name: "{{ __controller_user_accounts_item.user | default(__controller_user_accounts_item.username) | mandatory }}"
         username: "{{ __controller_user_accounts_item.user | default(__controller_user_accounts_item.username) | mandatory }}"
         new_username: "{{ __controller_user_accounts_item.new_username | default(omit, true) }}"
         # the 'true' in the second default leads to no password being set if the default password is empty
@@ -42,6 +43,7 @@
       changed_when: (__controller_user_accounts_job_async.changed if ansible_check_mode else false)
       vars:
         __operation: "{{ operation_translate[__controller_user_accounts_item.state | default(controller_state) | default('present')] }}"
+      no_log: "{{ controller_configuration_users_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:

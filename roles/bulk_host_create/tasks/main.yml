@@ -26,6 +26,7 @@
       poll: 0
       register: __controller_bulk_hosts_job_async
       changed_when: (__controller_bulk_hosts_job_async.changed if ansible_check_mode else false)
+      no_log: "{{ controller_configuration_bulk_hosts_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:

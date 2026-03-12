@@ -12,7 +12,7 @@ The following variables are required for that role to work properly:
 
 | Variable Name | Default Value | Required | Type | Description |
 | :------------ | :-----------: | :------: | :------: | :---------- |
-| `controller_api_plugin` | `ansible.controller` | yes | str | Full path for the controller_api_plugin to be used. <br/> Can have two possible values: <br/>&nbsp;&nbsp;- awx.awx.controller_api             # For the community Collection version <br/>&nbsp;&nbsp;- ansible.controller.controller_api  # For the Red Hat Certified Collection version|
+| `controller_api_plugin` | `ansible.controller` | yes | str | Full path for the controller_api_plugin to be used. <br/> Can have two possible values: <br/>&nbsp;&nbsp;- awx.awx.controller_api             # For the community Collection version <br/>&nbsp;&nbsp;- ansible.controller.controller_api  # For the Red Hat Certified Collection version |
 | `organization_filter` | N/A | no | str | Exports only the objects belonging to the specified organization (applies to all the objects that can be assigned to an organization). |
 | `organization_id` | N/A | no | int | Alternative to `organization_filter`, but specifiying the current organization's ID to filter by. Exports only the objects belonging to the specified organization (applies to all the objects that can be assigned to an organization). |
 | `project_id` | N/A | no | int | Specifiying the project id to filter by. Exports the project belonging to the specified organization. |
@@ -24,15 +24,15 @@ The following variables are required for that role to work properly:
 | `input_tag` | `['all']` | no | List of Strings | The tags which are applied to the 'sub-roles'. If 'all' is in the list (the default value) then all roles will be called.  Valid tags include ['all', 'labels', 'applications', 'instance_groups', 'settings', 'inventory', 'credentials', 'credential_types', 'notification_templates', 'users', 'teams', 'roles', 'organizations', 'projects', 'execution_environments', 'job_templates', 'workflow_job_templates', 'workflow_job_template_nodes', 'schedules'] |
 | `flatten_output` | N/A | no | bool | Whether to flatten the output in single files per each object type instead of the normal exportation structure |
 | `show_encrypted` | N/A | no | bool | Whether to remove the string '\$encrypted\$' in credentials output (not the actual credential value) |
-| `omit_id` | N/A | no | bool | Whether to create output files without objects id.|
-| `organization`| N/A | no | str | Default organization for all objects that have not been set in the source controller.|
+| `omit_id` | N/A | no | bool | Whether to create output files without objects id. |
+| `organization` | N/A | no | str | Default organization for all objects that have not been set in the source controller. |
 | `export_related_objects` | False | no | bool | Whether to export related objects (job templates related to certain workflows and the projects associated with these job templates) when a single JT or a single WFJT are being exported. |
 | `update_project_state` | False | no | bool | Whether the project should be updated after import to the target controller. |
 | `skip_inventory_sources` | False | no | bool | Whether the inventory sources should be exported with inventory. |
 | `skip_inventory_hosts` | False | no | bool | Whether the inventory hosts should be exported with inventory. |
 | `skip_inventory_groups` | False | no | bool | Whether the inventory groups should be exported with inventory. |
-| `templates_overrides_resources`| N/A | no | dict | Whether the certain objects should be modified during the export |
-| `templates_overrides_global`| N/A | no | dict | Whether the all objects should be modified during the export |
+| `templates_overrides_resources` | N/A | no | dict | Whether the certain objects should be modified during the export |
+| `templates_overrides_global` | N/A | no | dict | Whether the all objects should be modified during the export |
 
 ## Dependencies
 
