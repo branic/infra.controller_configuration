@@ -1,0 +1,9 @@
+---
+name: Check changelog
+
+on:
+  pull_request:
+
+jobs:
+  changelog:
+    uses: ansible/ansible-content-actions/.github/workflows/changelog.yaml@main
