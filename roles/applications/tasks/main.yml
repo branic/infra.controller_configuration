@@ -36,6 +36,7 @@
       changed_when: (__applications_job_async.changed if ansible_check_mode else false)
       vars:
         __operation: "{{ operation_translate[__application_item.state | default(controller_state) | default('present')] }}"
+      no_log: "{{ controller_configuration_applications_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:

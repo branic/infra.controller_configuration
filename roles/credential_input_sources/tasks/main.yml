@@ -32,6 +32,7 @@
       changed_when: (__credential_input_sources_job_async.changed if ansible_check_mode else false)
       vars:
         __operation: "{{ operation_translate[__cred_input_src_item.state | default(controller_state) | default('present')] }}"
+      no_log: "{{ controller_configuration_credential_input_sources_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:

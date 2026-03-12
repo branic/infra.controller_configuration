@@ -66,6 +66,7 @@
       when: (__controller_source_item.source | default(('scm' if controller_configuration_inventory_sources_enforce_defaults else omit), true)) != "constructed"
       vars:
         __operation: "{{ operation_translate[__controller_source_item.state | default(controller_state) | default('present')] }}"
+      no_log: "{{ controller_configuration_inventory_sources_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:
