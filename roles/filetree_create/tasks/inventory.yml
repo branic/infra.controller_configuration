@@ -1,5 +1,5 @@
 ---
-- name: Get the inventories from the API
+- name: inventory | Get the inventories from the API
   ansible.builtin.set_fact:
     inventory_lookvar: "{{ query(controller_api_plugin, 'api/v2/inventories/', query_params=(query_params | combine({'organization': organization_id} if organization_id
       is defined else {}, {'id': inventory_id} if inventory_id is defined else {})), host=controller_hostname, oauth_token=controller_oauthtoken, verify_ssl=controller_validate_certs,
@@ -10,26 +10,26 @@
       order_by: organization,id
   no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-- name: Block for to generate flatten output
+- name: inventory | Block for to generate flatten output
   when:
     - flatten_output is defined
     - flatten_output | bool
   vars:
     __dest: "{{ output_path }}/inventories.yaml"
   block:
-    - name: Stat if the output file exists
+    - name: inventory | Stat if the output file exists
       ansible.builtin.stat:
         path: "{{ __dest }}"
       register: __inventories_file
 
-    - name: Remove the yaml finalizer if it's already present
+    - name: inventory | Remove the yaml finalizer if it's already present
       ansible.builtin.lineinfile:
         path: "{{ __dest }}"
         line: "..."
         state: absent
       when: __inventories_file.stat.exists | bool
 
-    - name: Add current inventories to the inventories flat file
+    - name: inventory | Add current inventories to the inventories flat file
       ansible.builtin.blockinfile:
         create: true
         mode: "0644"
@@ -48,16 +48,16 @@
         loop_var: current_inventories_asset_value
         label: "{{ __dest }}"
 
-    - name: Remove all the blank lines introduced by the last task
+    - name: inventory | Remove all the blank lines introduced by the last task
       ansible.builtin.lineinfile:
         path: "{{ __dest }}"
         line: ""
         state: absent
 
-- name: Block for to generate the filetre_create normal output
+- name: inventory | Block for to generate the filetre_create normal output
   when: flatten_output is not defined or not (flatten_output | bool)
   block:
-    - name: Create the <ORGANIZATION_NAME>/inventories output directory for inventories in {{ output_path }}
+    - name: inventory | Create the <ORGANIZATION_NAME>/inventories output directory for inventories in {{ output_path }}
       ansible.builtin.file:
         path: "{{ __path }}"
         state: directory
@@ -71,7 +71,7 @@
         loop_var: needed_path
         label: "{{ __path }}"
 
-    - name: Add current inventories to the <ORGANIZATION_NAME>/inventories output yaml file in {{ output_path }}
+    - name: inventory | Add current inventories to the <ORGANIZATION_NAME>/inventories output yaml file in {{ output_path }}
       ansible.builtin.template:
         src: templates/current_inventories.j2
         dest: "{{ __dest }}"
@@ -86,7 +86,7 @@
         loop_var: current_inventories_asset_value
         label: "{{ __dest }}"
 
-- name: Set the inventory's inventory sources
+- name: inventory | Set the inventory's inventory sources
   ansible.builtin.include_tasks: inventory_sources.yml
   when: current_inventory_sources.total_inventory_sources > 0 and not skip_inventory_sources
   vars:
@@ -105,7 +105,7 @@
     label: "{{ inventory_sources_output_path }}"
   no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-- name: Set the inventory's hosts
+- name: inventory | Set the inventory's hosts
   ansible.builtin.include_tasks: hosts.yml
   when: not skip_inventory_hosts
   vars:
@@ -123,7 +123,7 @@
     label: "{{ hosts_output_path }}"
   no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-- name: Set the inventory's groups
+- name: inventory | Set the inventory's groups
   ansible.builtin.include_tasks: groups.yml
   when: current_inventory_groups.total_groups > 0 and not skip_inventory_groups
   vars:

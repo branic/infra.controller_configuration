@@ -1,5 +1,5 @@
 ---
-- name: Get current Projects from the API
+- name: projects | Get current Projects from the API
   ansible.builtin.set_fact:
     projects_lookvar: "{{ query(controller_api_plugin, 'api/v2/projects/', query_params=(query_params | combine({'organization': organization_id} if organization_id
       is defined else {}, {'id': project_id} if project_id is defined else {})), host=controller_hostname, oauth_token=controller_oauthtoken, verify_ssl=controller_validate_certs,
@@ -9,14 +9,14 @@
       order_by: organization,id
   no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-- name: Block for to generate flatten output
+- name: projects | Block for to generate flatten output
   when:
     - flatten_output is defined
     - flatten_output | bool
   vars:
     __dest: "{{ output_path }}/projects.yaml"
   block:
-    - name: Add current projects to the projects flat file
+    - name: projects | Add current projects to the projects flat file
       ansible.builtin.blockinfile:
         create: true
         mode: "0644"
@@ -42,16 +42,16 @@
         label: "{{ __dest }}"
       no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-    - name: Remove all the blank lines introduced by the last task
+    - name: projects | Remove all the blank lines introduced by the last task
       ansible.builtin.lineinfile:
         path: "{{ __dest }}"
         line: ""
         state: absent
 
-- name: Block for to generate the filetre_create normal output
+- name: projects | Block for to generate the filetre_create normal output
   when: flatten_output is not defined or not (flatten_output | bool)
   block:
-    - name: Create the <ORGANIZATION_NAME>/projects output directory for projects in {{ output_path }}
+    - name: projects | Create the <ORGANIZATION_NAME>/projects output directory for projects in {{ output_path }}
       ansible.builtin.file:
         path: "{{ __path }}"
         state: directory
@@ -65,7 +65,7 @@
         loop_var: needed_path
         label: "{{ __path }}"
 
-    - name: Add current projects to the <ORGANIZATION_NAME>/projects output file in {{ output_path }}
+    - name: projects | Add current projects to the <ORGANIZATION_NAME>/projects output file in {{ output_path }}
       ansible.builtin.template:
         src: templates/current_projects.j2
         dest: "{{ __dest }}"

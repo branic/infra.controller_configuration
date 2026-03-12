@@ -6,7 +6,7 @@
   block:
     # The user module is also an ansible.builtin module, but due to supporting both the awx.awx and automation.Controller collections
     # the FQCN cannot be used here.
-    - name: Managing Controller Users # noqa fqcn[action-core]
+    - name: Managing Controller Users # noqa fqcn[action-core] args[module]
       user:
         username: "{{ __controller_user_accounts_item.user | default(__controller_user_accounts_item.username) | mandatory }}"
         new_username: "{{ __controller_user_accounts_item.new_username | default(omit, true) }}"
