@@ -114,6 +114,7 @@
       changed_when: (__job_templates_job_async.changed if ansible_check_mode else false)
       vars:
         __operation: "{{ operation_translate[__controller_template_item.state | default(controller_state) | default('present')] }}"
+      no_log: "{{ controller_configuration_job_templates_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:

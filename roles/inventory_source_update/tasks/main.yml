@@ -35,6 +35,7 @@
       poll: 0
       register: __inventory_source_update_job_async
       changed_when: not __inventory_source_update_job_async.changed
+      no_log: "{{ controller_configuration_inventory_source_update_secure_logging }}"
 
     - name: Flag for errors (check mode only)
       ansible.builtin.set_fact:

@@ -28,6 +28,7 @@
       async: "{{ ansible_check_mode | ternary(0, 1000) }}"
       poll: 0
       register: __controller_setting_job_async
+      no_log: "{{ controller_configuration_settings_secure_logging }}"
       changed_when: (__controller_setting_job_async.changed if ansible_check_mode else false)
 
     - name: Flag for errors (check mode only)
