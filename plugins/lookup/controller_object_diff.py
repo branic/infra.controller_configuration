@@ -149,7 +149,11 @@ class LookupModule(LookupBase):
             keys_to_keep = ["username"]
             api_keys_to_keep = ["username"]
         elif api_list[0]["type"] == "workflow_job_template_node":
-            keys_to_keep = ["workflow_job_template", "unified_job_template", "identifier"]
+            keys_to_keep = [
+                "workflow_job_template",
+                "unified_job_template",
+                "identifier",
+            ]
             api_keys_to_keep = ["identifier", "summary_fields"]
         elif api_list[0]["type"] == "group" or api_list[0]["type"] == "host":
             keys_to_keep = ["name", "inventory"]
@@ -213,7 +217,7 @@ class LookupModule(LookupBase):
                 item.pop("summary_fields")
         elif api_list[0]["type"] == "credential":
             for item in api_list_reduced:
-                item.update({"organization": item["summary_fields"]["organization"]["name"] if item["summary_fields"]["organization"] else ""})
+                item.update({"organization": (item["summary_fields"]["organization"]["name"] if item["summary_fields"]["organization"] else "")})
                 item.update({"credential_type": item["summary_fields"]["credential_type"]["name"]})
                 item.pop("summary_fields")
         elif api_list[0]["type"] == "workflow_job_template_node":
@@ -342,7 +346,11 @@ class LookupModule(LookupBase):
                     elif (
                         ("organization" in compare_item)  # permission applies to all objects in orga
                         and (len(compare_item) == 3)  # we only have orga, team/user, and role
-                        and self.equal_dicts(compare_item, item, ["organization"] + list(item.keys() - compare_item.keys()))
+                        and self.equal_dicts(
+                            compare_item,
+                            item,
+                            ["organization"] + list(item.keys() - compare_item.keys()),
+                        )
                     ):
                         break
                 else:

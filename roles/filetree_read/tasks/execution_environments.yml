@@ -1,5 +1,5 @@
 ---
-- name: Get list of files inside {{ filetree_controller_execution_environments }}
+- name: execution_environments | Get list of files inside {{ filetree_controller_execution_environments }}
   ansible.builtin.find:
     paths: "{{ filetree_controller_execution_environments }}"
     file_type: file
@@ -9,7 +9,7 @@
     recurse: true
   register: __list_files_controller_execution_environments
 
-- name: Read Execution Environments definitions
+- name: execution_environments | Read Execution Environments definitions
   ansible.builtin.include_vars:
     file: "{{ __read_execution_environments_definitions_item.path }}"
   loop: "{{ __list_files_controller_execution_environments.files }}"
@@ -18,7 +18,7 @@
   register: __contents_filetree_controller_execution_environments
   failed_when: "'VARIABLE IS NOT DEFINED' in __contents_filetree_controller_execution_environments"
 
-- name: Populate Execution Environments list
+- name: execution_environments | Populate Execution Environments list
   ansible.builtin.set_fact:
     __populate_controller_execution_environments: "{{ (__populate_controller_execution_environments | default([])) + __populate_execution_environments_list_item.ansible_facts.controller_execution_environments
       }}"
@@ -29,10 +29,10 @@
   when: __contents_filetree_controller_execution_environments.results is defined and __populate_execution_environments_list_item.ansible_facts.controller_execution_environments
     is defined
 
-- name: Segregated Execution Environments list when controller_location is defined
+- name: execution_environments | Segregated Execution Environments list when controller_location is defined
   when: controller_location is defined and __populate_controller_execution_environments is defined
   block:
-    - name: Populate Execution Environments list by _common objects
+    - name: execution_environments | Populate Execution Environments list by _common objects
       ansible.builtin.set_fact:
         __populate_controller_execution_environments_common: "{{ (__populate_controller_execution_environments_common | default([])) + [__populate_execution_environments_list_common_item]
           }}"
@@ -42,7 +42,7 @@
       no_log: "{{ controller_configuration_filetree_read_secure_logging }}"
       when: __populate_execution_environments_list_common_item.controller_location is not defined
 
-    - name: Populate Execution Environments list by __site objects
+    - name: execution_environments | Populate Execution Environments list by __site objects
       ansible.builtin.set_fact:
         __populate_controller_execution_environments_site: "{{ (__populate_controller_execution_environments_site | default([])) + [__populate_execution_environments_list_site_item]
           }}"
@@ -53,20 +53,20 @@
       when: __populate_execution_environments_list_site_item.controller_location is defined and __populate_execution_environments_list_site_item.controller_location
         == controller_location
 
-    - name: Concatenate Execution Environments list common + site
+    - name: execution_environments | Concatenate Execution Environments list common + site
       ansible.builtin.set_fact:
         __populate_controller_execution_environments_total: "{{ __populate_controller_execution_environments_common | default([]) + __populate_controller_execution_environments_site
           }}"
       no_log: "{{ controller_configuration_filetree_read_secure_logging }}"
       when: __populate_controller_execution_environments_site is defined
 
-    - name: Set Execution Environments Data Structure common + site concatenated
+    - name: execution_environments | Set Execution Environments Data Structure common + site concatenated
       ansible.builtin.set_fact:
         __populate_controller_execution_environments: "{{ __populate_controller_execution_environments_total }}"
       no_log: "{{ controller_configuration_filetree_read_secure_logging }}"
       when: __populate_controller_execution_environments_total is defined
 
-- name: Set Execution Environments Data Structure
+- name: execution_environments | Set Execution Environments Data Structure
   ansible.builtin.set_fact:
     controller_execution_environments: "{{ __populate_controller_execution_environments }}"
   no_log: "{{ controller_configuration_filetree_read_secure_logging }}"

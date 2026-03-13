@@ -1,5 +1,5 @@
 ---
-- name: Get current Job Templates from the API
+- name: job_templates | Get current Job Templates from the API
   ansible.builtin.set_fact:
     job_templates_lookvar: "{{ query(controller_api_plugin, 'api/v2/job_templates/', query_params=(query_params | combine({'organization': organization_id} if organization_id
       is defined else {}, {'project': project_id} if project_id is defined else {}, {'id': job_template_id} if job_template_id is defined else {})), host=controller_hostname,
@@ -9,33 +9,33 @@
       order_by: organization,id
   no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-- name: Export related block
+- name: job_templates | Export related block
   when: job_template_id is defined and (export_related_objects is defined and export_related_objects)
   block:
-    - name: Set related project id when project is not defined
+    - name: job_templates | Set related project id when project is not defined
       when: project_id is not defined
       ansible.builtin.set_fact:
         related_project_id: "{{ job_templates_lookvar[0]['summary_fields']['project']['id'] }}"
 
-    - name: Set related project id when project is defined
+    - name: job_templates | Set related project id when project is defined
       when: project_id is defined
       ansible.builtin.set_fact:
         related_project_id: "{{ project_id }}"
 
-    - name: Export project related to job template
+    - name: job_templates | Export project related to job template
       ansible.builtin.include_tasks: projects.yml
       vars:
         project_id: "{{ related_project_id }}"
       no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-- name: Block for to generate flatten output
+- name: job_templates | Block for to generate flatten output
   when:
     - flatten_output is defined
     - flatten_output | bool
   vars:
     __dest: "{{ output_path }}/job_templates.yaml"
   block:
-    - name: Add current job_templates to the job_templates flat file
+    - name: job_templates | Add current job_templates to the job_templates flat file
       ansible.builtin.blockinfile:
         create: true
         mode: "0644"
@@ -63,16 +63,16 @@
         label: "{{ __dest }}"
       no_log: "{{ controller_configuration_filetree_create_secure_logging }}"
 
-    - name: Remove all the blank lines introduced by the last task
+    - name: job_templates | Remove all the blank lines introduced by the last task
       ansible.builtin.lineinfile:
         path: "{{ __dest }}"
         line: ""
         state: absent
 
-- name: Block for to generate the filetre_create normal output
+- name: job_templates | Block for to generate the filetre_create normal output
   when: flatten_output is not defined or not (flatten_output | bool)
   block:
-    - name: Create the <ORGANIZATION_NAME>/job_templates output directories for job templates in {{ output_path }}
+    - name: job_templates | Create the <ORGANIZATION_NAME>/job_templates output directories for job templates in {{ output_path }}
       ansible.builtin.file:
         path: "{{ __path }}"
         state: directory
@@ -86,7 +86,7 @@
         loop_var: needed_path
         label: "{{ __path }}"
 
-    - name: Add current job_templates to the <ORGANIZATION_NAME>/job_templates output file in {{ output_path }}
+    - name: job_templates | Add current job_templates to the <ORGANIZATION_NAME>/job_templates output file in {{ output_path }}
       ansible.builtin.template:
         src: templates/current_job_templates.j2
         dest: "{{ __dest }}"
