@@ -20,7 +20,7 @@ jobs:
       change_level: ${{ steps.bump_level.outputs.level }}
       change_present: ${{ steps.bump_level.outputs.change_present }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Get the most recent tag
         uses: actions-ecosystem/action-get-latest-tag@v1
@@ -70,7 +70,7 @@ jobs:
       || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-python@v5
         with:
@@ -118,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: release/${{ needs.calculate_version.outputs.collection_version }}
 
@@ -138,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: release/${{ needs.calculate_version.outputs.collection_version }}
 
@@ -182,7 +182,7 @@ jobs:
       - calculate_version
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: release/${{ needs.calculate_version.outputs.collection_version }}
 
@@ -206,7 +206,7 @@ jobs:
       - upload_tarball
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: release/${{ needs.calculate_version.outputs.collection_version }}
 

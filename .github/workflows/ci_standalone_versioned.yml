@@ -26,12 +26,12 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: ${{ inputs.awx_version == 'devel' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.gh_ref }}
 
       - name: Checkout AWX
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           repository: ansible/awx
           path: awx
