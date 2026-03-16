@@ -38,10 +38,14 @@ jobs:
             echo "change_present=true" >> "$GITHUB_OUTPUT"
           fi
 
-          grep -RE '(major_changes|breaking_changes)' changelogs/fragments 2>/dev/null
-          MAJOR=$?
-          grep -R minor_changes changelogs/fragments 2>/dev/null
-          MINOR=$?
+          MAJOR=1
+          if grep -RE '(major_changes|breaking_changes)' changelogs/fragments 2>/dev/null; then
+            MAJOR=0
+          fi
+          MINOR=1
+          if grep -R minor_changes changelogs/fragments 2>/dev/null; then
+            MINOR=0
+          fi
 
           if [ $MAJOR -eq 0 ]; then
             echo "level=major" >> "$GITHUB_OUTPUT"
