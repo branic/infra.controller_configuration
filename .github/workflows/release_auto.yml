@@ -75,6 +75,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: "${{ secrets.GH_WORKFLOW_KEY }}"
+
+      - name: Create release branch
+        run: |
+          BRANCH="release/${{ needs.calculate_version.outputs.collection_version }}"
+          git checkout -B "${BRANCH}"
 
       - uses: actions/setup-python@v6
         with:
