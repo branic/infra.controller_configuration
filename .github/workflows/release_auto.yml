@@ -142,15 +142,23 @@ jobs:
       - name: Generate changelog
         run: antsibull-changelog release --verbose --version ${{ needs.calculate_version.outputs.collection_version }}
 
-      - name: Push to release branch
-        uses: devops-infra/action-commit-push@master
-        with:
-          github_token: "${{ secrets.GH_WORKFLOW_KEY }}"
-          add_timestamp: false
-          commit_prefix: "[AUTO]"
-          commit_message: "Update changelog ${{ needs.calculate_version.outputs.collection_version }}"
-          force: false
-          target_branch: release/${{ needs.calculate_version.outputs.collection_version }}
+      # this action wasn't working as expected, so we're using the following steps instead
+      # - name: Push to release branch
+      #   uses: devops-infra/action-commit-push@master
+      #   with:
+      #     github_token: "${{ secrets.GH_WORKFLOW_KEY }}"
+      #     add_timestamp: false
+      #     commit_prefix: "[AUTO]"
+      #     commit_message: "Update changelog ${{ needs.calculate_version.outputs.collection_version }}"
+      #     force: false
+      #     target_branch: release/${{ needs.calculate_version.outputs.collection_version }}
+      - name: Commit and push to release branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "[AUTO] Update changelog ${{ needs.calculate_version.outputs.collection_version }}"
+          git push origin "release/${{ needs.calculate_version.outputs.collection_version }}"
 
   create_github_release:
     name: Create GitHub Release
