@@ -21,12 +21,44 @@ jobs:
       change_present: ${{ steps.bump_level.outputs.change_present }}
     steps:
       - uses: actions/checkout@v6
-
-      - name: Get the most recent tag
-        uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
         with:
-          semver_only: true
+          fetch-depth: 0
+
+      - name: Determine current version
+        id: current_version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          # Get the latest semver tag from git (all branches)
+          GIT_TAG=$(git tag --list --sort=-version:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
+          echo "Latest git tag: ${GIT_TAG:-none}"
+
+          # Get the latest GitHub release tag
+          GH_RELEASE=$(gh release view --json tagName -q '.tagName' 2>/dev/null || true)
+          echo "Latest GitHub release: ${GH_RELEASE:-none}"
+
+          # Compare and use the higher version
+          if [ -z "$GIT_TAG" ] && [ -z "$GH_RELEASE" ]; then
+            echo "::error::No existing version found from git tags or GitHub releases"
+            exit 1
+          fi
+
+          # Function: return the higher of two semver strings
+          higher_version() {
+            printf '%s\n%s' "$1" "$2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n1
+          }
+
+          if [ -n "$GIT_TAG" ] && [ -n "$GH_RELEASE" ]; then
+            CURRENT=$(higher_version "$GIT_TAG" "$GH_RELEASE")
+          elif [ -n "$GIT_TAG" ]; then
+            CURRENT="$GIT_TAG"
+          else
+            CURRENT="$GH_RELEASE"
+          fi
+
+          echo "Resolved current version: $CURRENT"
+          echo "current_version=$CURRENT" >> "$GITHUB_OUTPUT"
 
       - name: Calculate bump level
         id: bump_level
@@ -59,11 +91,23 @@ jobs:
           fi
 
       - name: Bump version
-        uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
-        with:
-          current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: ${{ steps.bump_level.outputs.level }}
+        shell: bash
+        run: |
+          CURRENT="${{ steps.current_version.outputs.current_version }}"
+          LEVEL="${{ steps.bump_level.outputs.level }}"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+
+          case "$LEVEL" in
+            major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+            minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+            patch) PATCH=$((PATCH + 1)) ;;
+          esac
+
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "Bumping $CURRENT ($LEVEL) -> $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
   changelog:
     name: Generate Changelog
