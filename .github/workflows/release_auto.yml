@@ -135,9 +135,9 @@ jobs:
       - name: Install dependencies
         run: pip install --upgrade "ansible-core>=2.15,<2.19" antsibull-changelog
 
-      - name: Update galaxy.yml version for changelog
+      - name: Update galaxy.yml version for changelog (remove -devel)
         run: |
-          sed -i "s/^version:.*/version: ${{ needs.calculate_version.outputs.collection_version }}-devel/" galaxy.yml
+          sed -i "s/^version:.*/version: ${{ needs.calculate_version.outputs.collection_version }}/" galaxy.yml
 
       - name: Generate changelog
         run: antsibull-changelog release --verbose --version ${{ needs.calculate_version.outputs.collection_version }}
@@ -257,7 +257,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GH_WORKFLOW_KEY }}
-          file: "${{ env.COLLECTION_NAMESPACE }}-${{ env.COLLECTION_NAME }}-*.tar.gz"
+          file: "${{ env.COLLECTION_NAMESPACE }}-${{ env.COLLECTION_NAME }}*.tar.gz"
           file_glob: true
           tag: ${{ needs.calculate_version.outputs.collection_version }}
           overwrite: true
